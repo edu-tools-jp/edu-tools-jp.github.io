@@ -3,3 +3,9 @@ options/
 *.py
 .DS_Store
 Thumbs.db
+.claude/
+# 席替えアプリは別リポジトリ（edu-tools-jp/sekigae）で公開
+席替えアプリ_オフライン版.html
+# 成績処理Excelは公開しない（2026-09-16 ユーザー判断）
+*.xlsm
+*.xlsx

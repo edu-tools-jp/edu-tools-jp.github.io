@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>センセイツールズ — Teacher's Tools｜先生のための無料ツール</title>
-<meta name="description" content="日本の学校の先生のための無料ツール配布サイト。席替え・成績処理・テスト勉強・学級レク。用途別に探せて、生徒情報は外部送信しません。すべて無料・登録不要・広告なし。">
+<meta name="description" content="日本の学校の先生のための無料ツール配布サイト。プリントへの書き込み・指名ルーレット・席替え・テスト勉強。生成AIで作った道具を用途別に掲載。生徒情報は外部送信しません。すべて無料・登録不要・広告なし。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -75,6 +75,7 @@
   :focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:1px;}
 
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad);}
+  [id]{scroll-margin-top:72px;}
 
   /* ═══════════ running head ═══════════ */
   .runhead{
@@ -111,7 +112,7 @@
   }
 
   /* ═══════════ hero ═══════════ */
-  .hero{padding:clamp(34px,6vw,60px) 0 clamp(26px,4vw,40px);}
+  .hero{padding-top:clamp(34px,6vw,60px);padding-bottom:clamp(26px,4vw,40px);}
   .hero__meta{
     display:flex;flex-wrap:wrap;gap:10px 22px;align-items:baseline;
     padding-bottom:20px;margin-bottom:clamp(24px,4vw,38px);border-bottom:1px solid var(--hair);
@@ -165,7 +166,7 @@
   @media(min-width:680px){.hero__index{grid-template-columns:1fr 1fr;column-gap:clamp(28px,4vw,56px);}}
 
   /* ═══════════ promise strip ═══════════ */
-  .promise{padding:clamp(10px,2vw,16px) 0 clamp(40px,6vw,56px);}
+  .promise{padding-top:clamp(10px,2vw,16px);padding-bottom:clamp(40px,6vw,56px);}
   .promise__lab{
     font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--meta);
     display:flex;align-items:center;gap:12px;margin-bottom:18px;
@@ -328,8 +329,15 @@
     color:var(--accent-deep);border:1px solid var(--accent-tint);background:var(--accent-tint);
     padding:3px 7px;white-space:nowrap;flex:none;margin-top:1px;
   }
-  .tool__cta{align-self:start;}
+  .tool__cta{align-self:start;display:flex;flex-direction:column;align-items:flex-start;gap:11px;}
+  .tool__sub{
+    font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--meta);
+    border-bottom:1px solid var(--hair-2);padding-bottom:2px;
+    transition:color .16s ease,border-color .16s ease;
+  }
+  .tool__sub:hover,.tool__sub:focus-visible{color:var(--accent-deep);border-color:var(--accent);}
   @media(min-width:720px){
+    .tool__cta{align-items:flex-end;}
     .tool{grid-template-columns:1fr auto;column-gap:32px;align-items:start;padding:26px 24px;}
     .tool__cta{grid-row:1;grid-column:2;padding-top:2px;}
     .tool__main{grid-column:1;}
@@ -492,7 +500,8 @@
     <span><span class="k">ISSUE</span>No.04 — 2026</span>
     <span><span class="k">FOR</span>日本の学校の先生へ</span>
     <span><span class="k">PRICE</span>¥0 ／ すべて無料</span>
-    <span><span class="k">TOOLS</span>6 種掲載 ／ 1 公開中</span>
+    <span><span class="k">TOOLS</span>4 種掲載 ／ すべて公開中</span>
+    <span><span class="k">MADE WITH</span>生成AI ／ 個人制作</span>
   </div>
 
   <div class="hero__lockup">
@@ -505,8 +514,8 @@
     </div>
     <div class="hero__side">
       <p class="hero__lead">
-        席替え、成績処理、テスト勉強、学級レク。授業と学級の現場でくり返す作業を、
-        <b>ブラウザで開けばすぐ動く道具</b>と<b>そのまま配れる配布物</b>にまとめました。
+        プリントへの書き込み、指名、席替え、テスト勉強。授業と学級の現場でくり返す作業を、
+        生成AIの力を借りて<b>ブラウザで開けばすぐ動く道具</b>にしました。
         登録もインストールも不要。<b>ぜんぶ無料</b>で、必要なものだけ選んで使えます。
       </p>
       <div class="hero__cta">
@@ -517,10 +526,10 @@
   </div>
 
   <nav class="hero__index" aria-label="公開中ツールの索引">
-    <a href="#cat-class"><span class="n num">01</span><span class="t">席替えアプリ</span><span class="c">クラス運営</span></a>
-    <a href="#cat-grade"><span class="n num">02</span><span class="t">成績処理Excel</span><span class="c">成績・評価</span></a>
-    <a href="#cat-study"><span class="n num">03</span><span class="t">くりトレ</span><span class="c">生徒に配る</span></a>
-    <a href="#cat-fun"><span class="n num">04</span><span class="t">ポケット☆ベースボール</span><span class="c">お楽しみ</span></a>
+    <a href="#tool-pdfnote"><span class="n num">01</span><span class="t">PDFノート</span><span class="c">授業で使う</span></a>
+    <a href="#tool-roulette"><span class="n num">02</span><span class="t">指名ルーレット</span><span class="c">授業で使う</span></a>
+    <a href="#tool-sekigae"><span class="n num">03</span><span class="t">席替えアプリ</span><span class="c">クラス運営</span></a>
+    <a href="#tool-kuritore"><span class="n num">04</span><span class="t">くりトレ</span><span class="c">生徒に配る</span></a>
   </nav>
 </section>
 
@@ -558,7 +567,7 @@
       </div>
       <p class="sec-head__desc">
         「何をしたいか」で探せるよう、ツールを用途ごとのプレートにまとめました。
-        左のカテゴリで絞り込めます。
+        カテゴリを選ぶと絞り込めます。
       </p>
     </div>
 
@@ -568,192 +577,134 @@
       <div class="railnav">
         <p class="railnav__lab" id="filter-label">Filter ／ 用途で絞る</p>
         <div class="tabs" role="tablist" aria-labelledby="filter-label">
-          <button class="tab" role="tab" id="tab-all"   aria-controls="cat-class cat-grade cat-study cat-fun cat-soon" aria-selected="true"  tabindex="0"  data-cat="all">すべて <span class="tnum num">06</span></button>
-          <button class="tab" role="tab" id="tab-class" aria-controls="cat-class" aria-selected="false" tabindex="-1" data-cat="class">クラス運営 <span class="tnum num">01</span></button>
-          <button class="tab" role="tab" id="tab-grade" aria-controls="cat-grade" aria-selected="false" tabindex="-1" data-cat="grade">成績・評価 <span class="tnum num">01</span></button>
-          <button class="tab" role="tab" id="tab-study" aria-controls="cat-study" aria-selected="false" tabindex="-1" data-cat="study">生徒に配る <span class="tnum num">01</span></button>
-          <button class="tab" role="tab" id="tab-fun"   aria-controls="cat-fun" aria-selected="false" tabindex="-1" data-cat="fun">お楽しみ <span class="tnum num">01</span></button>
-          <button class="tab" role="tab" id="tab-soon"  aria-controls="cat-soon" aria-selected="false" tabindex="-1" data-cat="soon">今後追加予定 <span class="tnum num">02</span></button>
+          <button class="tab" role="tab" id="tab-all"    aria-controls="cat-lesson cat-class cat-study" aria-selected="true"  tabindex="0"  data-cat="all">すべて <span class="tnum num">04</span></button>
+          <button class="tab" role="tab" id="tab-lesson" aria-controls="cat-lesson" aria-selected="false" tabindex="-1" data-cat="lesson">授業で使う <span class="tnum num">02</span></button>
+          <button class="tab" role="tab" id="tab-class"  aria-controls="cat-class" aria-selected="false" tabindex="-1" data-cat="class">クラス運営 <span class="tnum num">01</span></button>
+          <button class="tab" role="tab" id="tab-study"  aria-controls="cat-study" aria-selected="false" tabindex="-1" data-cat="study">生徒に配る <span class="tnum num">01</span></button>
         </div>
       </div>
 
       <!-- plates -->
       <div class="plates">
 
-        <!-- CAT 01 · クラス運営 -->
+        <!-- CAT 01 · 授業で使う -->
+        <article class="plate" id="cat-lesson" data-cat="lesson" role="tabpanel" aria-labelledby="tab-lesson cat-lesson-h" tabindex="0">
+          <div class="plate__head">
+            <div class="plate__spine"><span class="cat num">01</span> 授業で使う</div>
+            <div class="plate__titles">
+              <h3 id="cat-lesson-h">黒板のとなりの道具</h3>
+              <span class="lat">In the Classroom</span>
+              <span class="cnt num"><b>02</b> ／ 02 tools</span>
+            </div>
+          </div>
+          <div class="tool" id="tool-pdfnote">
+            <div class="tool__main">
+              <div class="tool__lead">
+                <span class="tool__no num">01</span>
+                <h4 class="tool__name">PDFノート</h4>
+              </div>
+              <div class="tool__body">
+                <p>配付プリントのPDFや写真を電子黒板・プロジェクタに映して、タッチペンで書き込める授業用ノート。答えの部分に「目かくし」をかぶせておけば、授業中にタッチでめくって見せられます。囲んで動かす・コピーする、ページの並べ替え、PDFへの書き出しにも対応しています。</p>
+                <div class="tool__kv">
+                  <span class="chip chip--cat">授業で使う</span>
+                  <span class="chip">形式&nbsp;<b>Webアプリ</b></span>
+                  <span class="chip">タッチ対応PC ＋ Chrome/Edge</span>
+                  <span class="chip">答えかくし</span>
+                </div>
+              </div>
+              <p class="tool__note"><span class="lk">Privacy</span>書き込みは、あなたが選んだPC内のフォルダにファイルとして自動保存されます。外部には送信しません。</p>
+            </div>
+            <div class="tool__cta">
+              <a class="btn btn--accent btn--sm" href="https://edu-tools-jp.github.io/pdfnote/" target="_blank" rel="noopener">使ってみる <span class="arw" aria-hidden="true">↗</span></a>
+              <a class="tool__sub" href="https://edu-tools-jp.github.io/pdfnote/PDF%E3%83%8E%E3%83%BC%E3%83%88_%E3%81%8B%E3%82%93%E3%81%9F%E3%82%93%E3%82%AC%E3%82%A4%E3%83%89.pdf" target="_blank" rel="noopener">かんたんガイド（PDF）</a>
+            </div>
+          </div>
+          <div class="tool" id="tool-roulette">
+            <div class="tool__main">
+              <div class="tool__lead">
+                <span class="tool__no num">02</span>
+                <h4 class="tool__name">指名ルーレット</h4>
+              </div>
+              <div class="tool__body">
+                <p>授業中の指名を、名簿からルーレットでランダムに。クラスごとに名簿を持てて、Excelからの取り込みにも対応。「一度当たった人は外す」の切り替えや、プロジェクタ向けの投影モードもあります。指名が負担になる生徒は、画面上ではほかの生徒と見分けがつかないまま抽選から外せます。</p>
+                <div class="tool__kv">
+                  <span class="chip chip--cat">授業で使う</span>
+                  <span class="chip">形式&nbsp;<b>Webアプリ</b></span>
+                  <span class="chip">PC・タブレット</span>
+                  <span class="chip">Excel名簿取り込み</span>
+                </div>
+              </div>
+              <p class="tool__note"><span class="lk">Privacy</span>名簿は使っているブラウザの中だけに保存され、サーバーには送信しません。</p>
+            </div>
+            <div class="tool__cta">
+              <a class="btn btn--accent btn--sm" href="https://edu-tools-jp.github.io/roulette/" target="_blank" rel="noopener">使ってみる <span class="arw" aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <!-- CAT 02 · クラス運営 -->
         <article class="plate" id="cat-class" data-cat="class" role="tabpanel" aria-labelledby="tab-class cat-class-h" tabindex="0">
           <div class="plate__head">
-            <div class="plate__spine"><span class="cat num">01</span> クラス運営</div>
+            <div class="plate__spine"><span class="cat num">02</span> クラス運営</div>
             <div class="plate__titles">
               <h3 id="cat-class-h">教室をまわす道具</h3>
               <span class="lat">Classroom Operations</span>
               <span class="cnt num"><b>01</b> ／ 01 tool</span>
             </div>
           </div>
-          <div class="tool">
+          <div class="tool" id="tool-sekigae">
             <div class="tool__main">
               <div class="tool__lead">
-                <span class="tool__no num">01</span>
+                <span class="tool__no num">03</span>
                 <h4 class="tool__name">席替えアプリ</h4>
               </div>
               <div class="tool__body">
-                <p>「この子とこの子は隣にしない」「あの子は前のほう」といった条件を入れて、ワンクリックで席替え。うまくいかなければ引き直すだけ。インストール不要で、ブラウザを開けばすぐ動きます。</p>
+                <p>Excelの名簿（ひな形つき）を読み込んで、「この2人は離す」「この子は前から2行目まで」といった条件つきで自動配置。一人ずつ・一括のルーレット演出で盛り上げ、全画面で発表してそのまま確定できます。教師側／生徒側の向きの切り替え、印刷やJPG保存（デザイン4種）まで、これひとつで。</p>
                 <div class="tool__kv">
                   <span class="chip chip--cat">クラス運営</span>
                   <span class="chip">形式&nbsp;<b>Webアプリ</b></span>
                   <span class="chip">条件つき自動配置</span>
+                  <span class="chip">印刷・JPG</span>
+                  <span class="chip">ネットなしでも動く</span>
                 </div>
               </div>
-              <p class="tool__note"><span class="lk">Privacy</span>名簿などの入力は端末内で処理し、外部に送信しません。</p>
+              <p class="tool__note"><span class="lk">Privacy</span>名簿はブラウザの中だけに保存し、外部には送信しません。バックアップをファイルに書き出して、別のPCへ移せます。</p>
             </div>
             <div class="tool__cta">
-              <span class="btn btn--wait btn--sm" aria-disabled="true">準備中</span>
+              <a class="btn btn--accent btn--sm" href="https://edu-tools-jp.github.io/sekigae/" target="_blank" rel="noopener">使ってみる <span class="arw" aria-hidden="true">↗</span></a>
             </div>
           </div>
         </article>
 
-        <!-- CAT 02 · 成績・評価 -->
-        <article class="plate" id="cat-grade" data-cat="grade" role="tabpanel" aria-labelledby="tab-grade cat-grade-h" tabindex="0">
-          <div class="plate__head">
-            <div class="plate__spine"><span class="cat num">02</span> 成績・評価</div>
-            <div class="plate__titles">
-              <h3 id="cat-grade-h">評価をさばく道具</h3>
-              <span class="lat">Grading &amp; Assessment</span>
-              <span class="cnt num"><b>01</b> ／ 01 tool</span>
-            </div>
-          </div>
-          <div class="tool">
-            <div class="tool__main">
-              <div class="tool__lead">
-                <span class="tool__no num">02</span>
-                <h4 class="tool__name">成績処理Excel</h4>
-              </div>
-              <div class="tool__body">
-                <p>観点別評価の合計点から、A・B・C と評定を自動で計算するExcelシート。判定の基準は「設定シート」で自由に変更でき、学校ごとのルールに合わせられます。使い慣れたExcelの上でそのまま完結します。</p>
-                <div class="tool__kv">
-                  <span class="chip chip--cat">成績・評価</span>
-                  <span class="chip">形式&nbsp;<b>.xlsx</b></span>
-                  <span class="chip">判定基準カスタム可</span>
-                </div>
-              </div>
-              <p class="tool__note"><span class="lk">Privacy</span>ファイル内で計算が完結し、通信は発生しません。</p>
-            </div>
-            <div class="tool__cta">
-              <span class="btn btn--wait btn--sm" aria-disabled="true">準備中</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- CAT 03 · 生徒に配る／テスト勉強 -->
+        <!-- CAT 03 · 生徒に配る -->
         <article class="plate" id="cat-study" data-cat="study" role="tabpanel" aria-labelledby="tab-study cat-study-h" tabindex="0">
           <div class="plate__head">
             <div class="plate__spine"><span class="cat num">03</span> 生徒に配る</div>
             <div class="plate__titles">
-              <h3 id="cat-study-h">生徒に配る道具</h3>
+              <h3 id="cat-study-h">生徒の手に渡す道具</h3>
               <span class="lat">For Students · Exam Prep</span>
               <span class="cnt num"><b>01</b> ／ 01 tool</span>
             </div>
           </div>
-          <div class="tool">
-            <div class="tool__main">
-              <div class="tool__lead">
-                <span class="tool__no num">03</span>
-                <h4 class="tool__name">くりトレ</h4>
-              </div>
-              <div class="tool__body">
-                <p>演習・暗記・OCR（画像から問題取り込み）に対応した学習用PWA。URLを渡すだけで生徒に配布でき、それぞれの端末でくり返し解いてもらえます。アプリのようにホーム画面へ置けます。</p>
-                <div class="tool__kv">
-                  <span class="chip chip--cat">生徒に配る／テスト勉強</span>
-                  <span class="chip">形式&nbsp;<b>PWA</b></span>
-                  <span class="chip">演習・暗記・OCR</span>
-                </div>
-              </div>
-              <p class="tool__note"><span class="lk">Privacy</span>学習データは各自の端末内（PWAキャッシュ）に保存されます。</p>
-            </div>
-            <div class="tool__cta">
-              <a class="btn btn--accent btn--sm" href="https://edu-tools-jp.github.io/kurikaeshi/" target="_blank" rel="noopener">使ってみる <span class="arw" aria-hidden="true">↗</span></a>
-            </div>
-          </div>
-        </article>
-
-        <!-- CAT 04 · お楽しみ／スキマ時間 -->
-        <article class="plate" id="cat-fun" data-cat="fun" role="tabpanel" aria-labelledby="tab-fun cat-fun-h" tabindex="0">
-          <div class="plate__head">
-            <div class="plate__spine"><span class="cat num">04</span> お楽しみ</div>
-            <div class="plate__titles">
-              <h3 id="cat-fun-h">空いた時間の一手</h3>
-              <span class="lat">Fun · Downtime</span>
-              <span class="cnt num"><b>01</b> ／ 01 tool</span>
-            </div>
-          </div>
-          <div class="tool">
+          <div class="tool" id="tool-kuritore">
             <div class="tool__main">
               <div class="tool__lead">
                 <span class="tool__no num">04</span>
-                <h4 class="tool__name">ポケット☆ベースボール</h4>
+                <h4 class="tool__name">くりトレ</h4>
               </div>
               <div class="tool__body">
-                <p>学級レクや、授業のスキマ時間にちょうどいい野球ゲーム。ひとりでCPUと対戦しても、友だちと端末をつないでオンライン対戦してもOK。すぐ始められます。</p>
+                <p>中高生向けのテスト勉強アプリ。「演習モード」は問題を撮影して、全問正解するまでくり返し解く。「暗記モード」は教科書を撮影し、覚えたいところを赤シートのように隠して確かめる。URLを渡すだけで配れて、スマホのホーム画面にアプリとして置けます。</p>
                 <div class="tool__kv">
-                  <span class="chip chip--cat">お楽しみ／スキマ時間</span>
-                  <span class="chip">形式&nbsp;<b>ゲーム</b></span>
-                  <span class="chip">CPU戦・オンライン対戦</span>
+                  <span class="chip chip--cat">生徒に配る</span>
+                  <span class="chip">形式&nbsp;<b>Webアプリ</b></span>
+                  <span class="chip">スマホ・タブレット</span>
+                  <span class="chip">演習・暗記</span>
                 </div>
               </div>
-              <p class="tool__note"><span class="lk">Privacy</span>オンライン対戦は端末どうしのP2P（ピアツーピア）通信で行います。</p>
+              <p class="tool__note"><span class="lk">Privacy</span>撮影した問題や学習の記録は、生徒それぞれの端末の中だけに保存されます。</p>
             </div>
             <div class="tool__cta">
-              <span class="btn btn--wait btn--sm" aria-disabled="true">準備中</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- CAT 05 · 今後追加予定 -->
-        <article class="plate plate--soon" id="cat-soon" data-cat="soon" role="tabpanel" aria-labelledby="tab-soon cat-soon-h" tabindex="0">
-          <div class="plate__head">
-            <div class="plate__spine"><span class="cat num">05</span> 準備中</div>
-            <div class="plate__titles">
-              <h3 id="cat-soon-h">今後追加予定</h3>
-              <span class="lat">Coming Soon</span>
-              <span class="cnt num"><b>02</b> ／ 02 planned</span>
-            </div>
-          </div>
-          <div class="tool">
-            <div class="tool__main">
-              <div class="tool__lead">
-                <span class="tool__no num">05</span>
-                <h4 class="tool__name">班分け・くじ引き</h4>
-              </div>
-              <div class="tool__body">
-                <p>人数やグループ数、組み合わせの条件を指定して、公平に班をつくる／順番をきめる道具。名簿を貼るだけで使える形を検討中です。日直や係決めのくじ引きにも。</p>
-                <div class="tool__kv">
-                  <span class="chip chip--cat">クラス運営</span>
-                  <span class="chip">開発中</span>
-                </div>
-              </div>
-              <p class="tool__note"><span class="lk">Planned</span>公開時も、端末内処理・外部送信なしの方針で設計します。</p>
-            </div>
-            <div class="tool__cta">
-              <span class="btn btn--wait" aria-disabled="true">準備中</span>
-            </div>
-          </div>
-          <div class="tool">
-            <div class="tool__main">
-              <div class="tool__lead">
-                <span class="tool__no num">06</span>
-                <h4 class="tool__name">授業タイマー</h4>
-              </div>
-              <div class="tool__body">
-                <p>作業時間や小テストのカウントダウンを、教室のスクリーンに大きく表示するタイマー。残り時間が、離れた席からでも読める大きさで。仕上げ中です。</p>
-                <div class="tool__kv">
-                  <span class="chip chip--cat">クラス運営</span>
-                  <span class="chip">開発中</span>
-                </div>
-              </div>
-              <p class="tool__note"><span class="lk">Planned</span>ブラウザ内だけで動く、通信の要らない道具にする予定です。</p>
-            </div>
-            <div class="tool__cta">
-              <span class="btn btn--wait" aria-disabled="true">準備中</span>
+              <a class="btn btn--accent btn--sm" href="https://edu-tools-jp.github.io/kurikaeshi/" target="_blank" rel="noopener">使ってみる <span class="arw" aria-hidden="true">↗</span></a>
             </div>
           </div>
         </article>
@@ -780,7 +731,7 @@
       <div class="safe__list">
         <div class="safe__item">
           <span class="sn num">01</span>
-          <div><b>生徒の情報を外部に送らない</b><span>名簿や成績などの入力は、原則としてあなたの端末（ブラウザやExcel）の中だけで処理します。各ツールの具体的な扱いは、一覧の注記に明記しています。</span></div>
+          <div><b>生徒の情報を外部に送らない</b><span>名簿などの入力は、原則としてあなたの端末（ブラウザ）の中だけで処理します。各ツールの具体的な扱いは、一覧の注記に明記しています。</span></div>
         </div>
         <div class="safe__item">
           <span class="sn num">02</span>
@@ -792,7 +743,7 @@
         </div>
         <div class="safe__item">
           <span class="sn num">04</span>
-          <div><b>すべて無料で使える</b><span>会員登録も課金もありません。オンライン対戦など一部の機能で端末どうしがつながる点だけ、注記で個別にお知らせしています。</span></div>
+          <div><b>すべて無料で使える</b><span>会員登録も課金もありません。必要なのはブラウザだけ。アプリによって対応する端末が違うので、各ツールの表示をご確認ください。</span></div>
         </div>
       </div>
 
@@ -822,21 +773,21 @@
         <div class="step__n num">1</div>
         <div class="step__b">
           <h3>用途からえらぶ</h3>
-          <p>「クラス運営」「成績・評価」など、いまやりたいことのカテゴリから道具をえらびます。上のタブで絞り込むこともできます。</p>
+          <p>「授業で使う」「クラス運営」など、いまやりたいことのカテゴリから道具をえらびます。上のタブで絞り込むこともできます。</p>
         </div>
       </div>
       <div class="step">
         <div class="step__n num">2</div>
         <div class="step__b">
-          <h3>ひらく／ダウンロード</h3>
-          <p>Webアプリは「使ってみる」でその場で起動。Excelなどの配布物は「ダウンロード」でファイルを保存し、お使いのソフトで開きます。</p>
+          <h3>ひらく</h3>
+          <p>「使ってみる」を押すと、ブラウザでその場で起動します。よく使う道具は、ブックマークやホーム画面に置いておくと便利です。</p>
         </div>
       </div>
       <div class="step">
         <div class="step__n num">3</div>
         <div class="step__b">
           <h3>そのまま使う</h3>
-          <p>条件を入れてワンクリック、あるいは配布用URLを生徒にわたすだけ。登録もインストールも不要。合わなければ閉じるだけです。</p>
+          <p>名簿を入れてスタート、あるいはURLを生徒にわたすだけ。登録もインストールも不要。一度開いたアプリは、ネットが切れても動くものが多いです。</p>
         </div>
       </div>
     </div>
@@ -867,14 +818,14 @@
         <p style="color:var(--meta);font-size:13.5px;max-width:56ch;">
           ※ ツールは個人が制作・公開しているものです。所属や資格を保証するものではなく、ご利用は各自の判断でお願いします。気になる点はお気軽にリクエスト窓口へ。
         </p>
-        <a class="maker__link" href="#" rel="noopener">YouTubeを見る <span class="arw" aria-hidden="true">↗</span></a>
+        <a class="maker__link" href="https://www.youtube.com/@ueshima-sensei" target="_blank" rel="noopener">YouTube「みんな中学校」を見る <span class="arw" aria-hidden="true">↗</span></a>
       </div>
       <dl class="maker__meta">
         <div><dt>つくる人</dt><dd>理科系クリエイター</dd></div>
         <div><dt>つくり方</dt><dd>生成AIを活用した個人制作</dd></div>
         <div><dt>むけて</dt><dd>日本の学校の先生</dd></div>
         <div><dt>方針</dt><dd>まず現場で役立つこと</dd></div>
-        <div><dt>発信</dt><dd>YouTube ／ 動画で紹介</dd></div>
+        <div><dt>発信</dt><dd>YouTube「みんな中学校」</dd></div>
       </dl>
     </div>
   </div>
@@ -893,7 +844,7 @@
           いただいた声を参考に、次の道具をつくります。すべてに個別対応はできませんが、ひとつずつ目を通しています。
         </p>
         <div style="margin-top:24px;">
-          <a class="btn btn--accent" href="#" aria-label="リクエストフォームを開く（Googleフォーム）">リクエストを送る <span class="arw" aria-hidden="true">→</span></a>
+          <a class="btn btn--accent" href="https://docs.google.com/forms/d/e/1FAIpQLSdtz3_S6C-0a1sBhej9Nh9wPGDmX8obYs3fRwCa0p-Zj44lwQ/viewform" target="_blank" rel="noopener" aria-label="リクエストフォームを開く（Googleフォーム、新しいタブ）">リクエストを送る <span class="arw" aria-hidden="true">↗</span></a>
         </div>
       </div>
       <div class="req__r">
@@ -903,7 +854,7 @@
           <li><span class="m num">b</span> こうなると助かる、という理想の動き</li>
           <li><span class="m num">c</span> 教科・学年など、分かれば背景も</li>
         </ul>
-        <p class="req__note">Googleフォームが開きます。<br>お名前や学校名の入力は任意です。</p>
+        <p class="req__note">Googleフォームが開きます（ログイン不要）。<br>お名前や学校名の入力は任意、ニックネームでも大丈夫です。</p>
       </div>
     </div>
   </div>
@@ -935,11 +886,9 @@
       <nav class="foot__col" aria-label="用途カテゴリ索引">
         <h4>Categories ／ 用途</h4>
         <ul>
-          <li><a href="#cat-class"><span class="idx num">01</span>クラス運営</a></li>
-          <li><a href="#cat-grade"><span class="idx num">02</span>成績・評価</a></li>
+          <li><a href="#cat-lesson"><span class="idx num">01</span>授業で使う</a></li>
+          <li><a href="#cat-class"><span class="idx num">02</span>クラス運営</a></li>
           <li><a href="#cat-study"><span class="idx num">03</span>生徒に配る／テスト勉強</a></li>
-          <li><a href="#cat-fun"><span class="idx num">04</span>お楽しみ／スキマ時間</a></li>
-          <li><span class="muted"><span class="idx num">05</span>今後追加予定（準備中）</span></li>
         </ul>
       </nav>
     </div>
