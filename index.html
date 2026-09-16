@@ -1,0 +1,991 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>センセイツールズ — Teacher's Tools｜先生のための無料ツール</title>
+<meta name="description" content="日本の学校の先生のための無料ツール配布サイト。席替え・成績処理・テスト勉強・学級レク。用途別に探せて、生徒情報は外部送信しません。すべて無料・登録不要・広告なし。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* ground biased warm toward the vermilion, not the generic cream */
+    --ground:#f6f3ec;
+    --ground-2:#efeadf;
+    --paper:#ffffff;
+    --ink:#181410;
+    --ink-2:#4a423a;
+    --meta:#6f6659;
+    --hair:#dbd4c7;
+    --hair-2:#c6bdad;
+    --accent:#2f6048;
+    --accent-deep:#234835;
+    --accent-tint:#dde8e1;
+    --on-accent:#f2f6f3;
+    --on-accent-mute:#e4efe8;
+    --focus:#1a5fb4;
+    --disabled:#a89f90;
+
+    --display:"Fraunces",Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;
+    --mono:"Space Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+
+    --pad:clamp(18px,5vw,40px);
+    --maxw:1180px;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.72;
+    font-feature-settings:"palt" 1;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4,p,ul,ol,dl,figure{margin:0;}
+  ul{list-style:none;padding:0;}
+  a{color:inherit;text-decoration:none;}
+  img,svg{max-width:100%;display:block;}
+  button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;}
+  ::selection{background:var(--accent);color:#fff;}
+
+  .mono{font-family:var(--mono);}
+  .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;}
+  .eyebrow{
+    font-family:var(--mono);font-size:11px;font-weight:400;
+    letter-spacing:.24em;text-transform:uppercase;color:var(--accent);
+  }
+  .eyebrow--ink{color:var(--ink-2);}
+
+  .skip{
+    position:absolute;left:10px;top:-64px;z-index:120;
+    background:var(--ink);color:var(--ground);
+    padding:11px 17px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+    transition:top .18s ease;
+  }
+  .skip:focus{top:10px;}
+
+  :focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:1px;}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad);}
+
+  /* ═══════════ running head ═══════════ */
+  .runhead{
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb,var(--ground) 90%, transparent);
+    -webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);
+    border-bottom:1px solid var(--hair);
+  }
+  .runhead__in{display:flex;align-items:center;gap:14px;height:54px;}
+  .runhead__mark{
+    display:flex;align-items:baseline;gap:9px;white-space:nowrap;
+    font-family:var(--display);font-weight:900;font-size:16px;letter-spacing:-.01em;color:var(--ink);
+  }
+  .runhead__mark b{color:var(--accent);font-weight:900;}
+  .runhead__mark span{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--meta);text-transform:uppercase;}
+  .runhead__nav{margin-left:auto;display:none;gap:24px;}
+  .runhead__nav a{
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--meta);
+    position:relative;padding:5px 0;transition:color .16s ease;
+  }
+  .runhead__nav a::after{
+    content:"";position:absolute;left:0;right:100%;bottom:0;height:1.5px;background:var(--accent);
+    transition:right .28s cubic-bezier(.2,.7,.2,1);
+  }
+  .runhead__nav a:hover,.runhead__nav a:focus-visible{color:var(--ink);}
+  .runhead__nav a:hover::after,.runhead__nav a:focus-visible::after{right:0;}
+  .runhead__no{
+    margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--meta);
+  }
+  @media(min-width:920px){
+    .runhead__nav{display:flex;}
+    .runhead__no{margin-left:0;padding-left:22px;border-left:1px solid var(--hair);}
+  }
+
+  /* ═══════════ hero ═══════════ */
+  .hero{padding:clamp(34px,6vw,60px) 0 clamp(26px,4vw,40px);}
+  .hero__meta{
+    display:flex;flex-wrap:wrap;gap:10px 22px;align-items:baseline;
+    padding-bottom:20px;margin-bottom:clamp(24px,4vw,38px);border-bottom:1px solid var(--hair);
+    font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--meta);
+  }
+  .hero__meta .k{color:var(--accent);margin-right:.55em;}
+  .hero__lockup{display:grid;gap:clamp(20px,3vw,34px);grid-template-columns:1fr;}
+  .hero__title{
+    font-family:var(--display);
+    font-weight:900;
+    line-height:.9;
+    letter-spacing:-.025em;
+    font-size:clamp(52px,15vw,150px);
+    text-wrap:balance;
+  }
+  .hero__title .line{display:block;}
+  .hero__title .accent{color:var(--accent);font-style:italic;}
+  .hero__jp{
+    font-family:var(--display);font-weight:600;
+    font-size:clamp(20px,4.3vw,34px);
+    letter-spacing:.005em;line-height:1.24;margin-top:.5em;
+    max-width:20ch;text-wrap:balance;
+  }
+  .hero__side{display:flex;flex-direction:column;gap:22px;}
+  .hero__lead{max-width:42ch;font-size:16px;color:var(--ink-2);line-height:1.78;}
+  .hero__lead b{color:var(--ink);font-weight:600;}
+  .hero__cta{display:flex;flex-wrap:wrap;gap:13px 16px;align-items:center;}
+  @media(min-width:860px){
+    .hero__lockup{grid-template-columns:1.35fr .95fr;column-gap:clamp(32px,5vw,64px);align-items:end;}
+    .hero__side{padding-bottom:8px;}
+  }
+
+  /* index rail inside hero */
+  .hero__index{
+    margin-top:clamp(30px,4vw,44px);border-top:2px solid var(--ink);padding-top:2px;
+    display:grid;grid-template-columns:1fr;
+  }
+  .hero__index a{
+    display:flex;align-items:baseline;gap:14px;
+    padding:13px 2px;border-bottom:1px solid var(--hair);
+    font-size:15px;color:var(--ink);
+  }
+  .hero__index a .n{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.08em;min-width:2.6em;}
+  .hero__index a .t{font-family:var(--display);font-weight:600;position:relative;}
+  .hero__index a .t::after{content:"";position:absolute;left:0;right:100%;bottom:-3px;height:1.5px;background:var(--accent);transition:right .28s cubic-bezier(.2,.7,.2,1);}
+  .hero__index a:hover .t::after,.hero__index a:focus-visible .t::after{right:0;}
+  .hero__index a .c{
+    margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--meta);
+  }
+  @media(min-width:680px){.hero__index{grid-template-columns:1fr 1fr;column-gap:clamp(28px,4vw,56px);}}
+
+  /* ═══════════ promise strip ═══════════ */
+  .promise{padding:clamp(10px,2vw,16px) 0 clamp(40px,6vw,56px);}
+  .promise__lab{
+    font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--meta);
+    display:flex;align-items:center;gap:12px;margin-bottom:18px;
+  }
+  .promise__lab::after{content:"";flex:1;height:1px;background:var(--hair);}
+  .promise__grid{
+    display:grid;grid-template-columns:1fr;
+    border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);
+  }
+  .promise__i{
+    display:flex;gap:15px;align-items:flex-start;
+    padding:20px 2px;border-bottom:1px solid var(--hair);
+  }
+  .promise__i:last-child{border-bottom:0;}
+  .promise__n{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em;padding-top:4px;}
+  .promise__b b{display:block;font-family:var(--display);font-weight:600;font-size:16.5px;margin-bottom:3px;letter-spacing:.005em;}
+  .promise__b span{font-size:13.5px;color:var(--meta);line-height:1.6;}
+  @media(min-width:720px){
+    .promise__grid{grid-template-columns:repeat(4,1fr);border-left:1px solid var(--hair);}
+    .promise__i{border-bottom:0;border-right:1px solid var(--hair);flex-direction:column;gap:12px;padding:24px 20px;min-height:158px;}
+    .promise__i:first-child{border-left:0;}
+  }
+
+  /* ═══════════ buttons ═══════════ */
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:.01em;
+    padding:13px 21px;border:1.5px solid var(--ink);background:var(--ink);color:var(--ground);
+    transition:background .16s ease,color .16s ease,border-color .16s ease;
+  }
+  .btn .arw{transition:transform .22s cubic-bezier(.2,.7,.2,1);}
+  .btn:hover,.btn:focus-visible{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .btn:hover .arw,.btn:focus-visible .arw{transform:translateX(4px);}
+  .btn--ghost{background:transparent;color:var(--ink);}
+  .btn--ghost:hover,.btn--ghost:focus-visible{background:var(--ink);color:var(--ground);border-color:var(--ink);}
+  .btn--accent{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .btn--accent:hover,.btn--accent:focus-visible{background:var(--accent-deep);border-color:var(--accent-deep);}
+  .btn--sm{padding:10px 16px;font-size:13px;}
+  .btn--onred{background:#fff;color:var(--accent-deep);border-color:#fff;}
+  .btn--onred:hover,.btn--onred:focus-visible{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .btn--wait{
+    background:transparent;border:1.5px dashed var(--hair-2);color:var(--disabled);
+    cursor:not-allowed;font-family:var(--mono);font-weight:400;font-size:12px;
+    letter-spacing:.08em;text-transform:uppercase;padding:11px 15px;
+  }
+  .btn--wait:hover{background:transparent;color:var(--disabled);border-color:var(--hair-2);}
+  .btn__file{font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.04em;opacity:.7;}
+
+  /* ═══════════ section scaffold ═══════════ */
+  .section{padding:clamp(52px,8vw,84px) 0;}
+  .section + .section{border-top:1px solid var(--hair);}
+  .sec-head{
+    display:grid;gap:14px;margin-bottom:clamp(28px,4vw,40px);
+    grid-template-columns:1fr;align-items:end;
+  }
+  .sec-head__no{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;}
+  .sec-head__t{
+    font-family:var(--display);font-weight:900;line-height:1;letter-spacing:-.02em;
+    font-size:clamp(30px,6vw,52px);text-wrap:balance;
+  }
+  .sec-head__lat{display:block;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--meta);margin-top:12px;}
+  .sec-head__desc{color:var(--ink-2);max-width:38ch;font-size:15.5px;line-height:1.72;}
+  @media(min-width:820px){
+    .sec-head{grid-template-columns:1.4fr 1fr;column-gap:48px;}
+    .sec-head__desc{justify-self:end;padding-bottom:6px;}
+  }
+
+  /* ═══════════ catalogue: filter + rail + plates ═══════════ */
+  .catalogue{display:grid;grid-template-columns:1fr;gap:0;}
+  @media(min-width:1000px){
+    .catalogue{grid-template-columns:200px minmax(0,1fr);column-gap:clamp(28px,3.5vw,52px);align-items:start;}
+  }
+
+  /* category index rail (sticky on desktop, becomes filter list) */
+  .railnav{margin-bottom:30px;}
+  .railnav__lab{
+    font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--meta);
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .railnav__lab::after{content:"";flex:1;height:1px;background:var(--hair);}
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;}
+  .tab{
+    font-family:var(--display);font-weight:600;font-size:13.5px;
+    padding:9px 14px;border:1.5px solid var(--hair-2);color:var(--ink-2);
+    display:inline-flex;align-items:baseline;gap:9px;white-space:nowrap;
+    transition:border-color .16s ease,color .16s ease,background .16s ease;
+  }
+  .tab .tnum{font-family:var(--mono);font-size:10.5px;color:var(--meta);}
+  .tab:hover{border-color:var(--ink);color:var(--ink);}
+  .tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--ground);}
+  .tab[aria-selected="true"] .tnum{color:var(--on-accent-mute);}
+  @media(min-width:1000px){
+    .railnav{position:sticky;top:74px;margin-bottom:0;}
+    .tabs{flex-direction:column;gap:0;border-top:1px solid var(--hair);}
+    .tab{
+      width:100%;justify-content:flex-start;border:0;border-bottom:1px solid var(--hair);
+      padding:12px 4px;font-size:14px;position:relative;
+    }
+    .tab .tnum{margin-left:auto;}
+    .tab:hover{background:transparent;color:var(--accent-deep);padding-left:10px;}
+    .tab[aria-selected="true"]{background:transparent;color:var(--ink);padding-left:14px;}
+    .tab[aria-selected="true"]::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:5px;background:var(--accent);}
+    .tab[aria-selected="true"] .tnum{color:var(--meta);}
+  }
+
+  .plates{display:grid;gap:24px;min-width:0;}
+
+  .plate{border:1px solid var(--hair-2);background:var(--paper);}
+  .plate.is-hidden{display:none;}
+  .plate__head{
+    display:grid;grid-template-columns:1fr;
+    border-bottom:1px solid var(--hair);
+  }
+  .plate__spine{
+    display:flex;align-items:center;gap:11px;
+    background:var(--accent);color:var(--on-accent);
+    padding:13px 17px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;
+  }
+  .plate__spine .cat{font-weight:700;opacity:.72;}
+  .plate__spine .cat::before{content:"CAT.";margin-right:6px;opacity:.7;}
+  .plate__titles{padding:17px 18px 15px;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;}
+  .plate__titles h3{
+    font-family:var(--display);font-weight:900;font-size:clamp(22px,4.4vw,32px);
+    letter-spacing:-.015em;line-height:1.04;
+  }
+  .plate__titles .lat{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--meta);}
+  .plate__titles .cnt{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--meta);}
+  .plate__titles .cnt b{color:var(--accent);}
+  @media(min-width:640px){
+    .plate__head{grid-template-columns:172px 1fr;align-items:stretch;}
+    .plate__spine{border-right:1px solid var(--accent-deep);flex-direction:column;align-items:flex-start;justify-content:center;gap:14px;padding:20px 18px;}
+    .plate__titles{padding:20px 24px;}
+  }
+
+  .tool{
+    display:grid;grid-template-columns:1fr;gap:16px;
+    padding:22px 18px;border-bottom:1px solid var(--hair);
+  }
+  .tool:last-child{border-bottom:0;}
+  .tool__lead{display:flex;align-items:baseline;gap:12px;}
+  .tool__no{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.06em;padding-top:3px;flex:none;}
+  .tool__name{font-family:var(--display);font-weight:900;font-size:clamp(20px,3vw,25px);letter-spacing:-.01em;line-height:1.12;}
+  .tool__body p{font-size:15px;color:var(--ink-2);line-height:1.72;max-width:54ch;}
+  .tool__kv{display:flex;flex-wrap:wrap;gap:8px 9px;margin-top:14px;}
+  .chip{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    padding:5px 9px;border:1px solid var(--hair-2);color:var(--meta);
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .chip--cat{color:var(--accent-deep);border-color:var(--accent-tint);background:var(--accent-tint);}
+  .chip b{color:var(--ink);}
+  .tool__note{
+    margin-top:16px;padding-top:14px;border-top:1px dashed var(--hair-2);
+    display:flex;gap:11px;align-items:flex-start;
+    font-size:12.5px;color:var(--meta);line-height:1.6;max-width:58ch;
+  }
+  .tool__note .lk{
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent-deep);border:1px solid var(--accent-tint);background:var(--accent-tint);
+    padding:3px 7px;white-space:nowrap;flex:none;margin-top:1px;
+  }
+  .tool__cta{align-self:start;}
+  @media(min-width:720px){
+    .tool{grid-template-columns:1fr auto;column-gap:32px;align-items:start;padding:26px 24px;}
+    .tool__cta{grid-row:1;grid-column:2;padding-top:2px;}
+    .tool__main{grid-column:1;}
+  }
+
+  /* upcoming plate variant */
+  .plate--soon{border-style:dashed;background:transparent;}
+  .plate--soon .plate__spine{background:transparent;color:var(--meta);border-bottom:1px solid var(--hair);border-right:1px solid var(--hair);}
+  .plate--soon .plate__spine .cat::before{content:"NEXT";}
+  .plate--soon .tool{opacity:.74;}
+  .plate--soon .tool__name{color:var(--ink-2);}
+  .plate--soon .chip--cat{color:var(--meta);background:transparent;border-color:var(--hair-2);}
+
+  /* ═══════════ 安心 masthead (boldest moment) ═══════════ */
+  .safe{background:var(--accent);color:var(--on-accent);}
+  .safe__grid{display:grid;grid-template-columns:1fr;gap:0;padding:clamp(48px,7vw,72px) 0 clamp(20px,3vw,32px);}
+  .safe__lede{padding-bottom:32px;border-bottom:1px solid rgba(251,241,234,.28);margin-bottom:32px;}
+  .safe .eyebrow{color:var(--on-accent);opacity:.85;}
+  .safe__h{
+    font-family:var(--display);font-weight:900;letter-spacing:-.02em;line-height:.98;
+    font-size:clamp(40px,9vw,86px);margin:16px 0 0;text-wrap:balance;
+  }
+  .safe__jp{font-family:var(--display);font-weight:600;font-size:clamp(17px,3.4vw,23px);margin-top:14px;max-width:22ch;line-height:1.4;}
+  .safe__p{margin-top:18px;max-width:48ch;font-size:15px;line-height:1.74;color:var(--on-accent-mute);}
+  .safe__list{display:grid;grid-template-columns:1fr;padding-bottom:40px;}
+  .safe__item{
+    display:grid;grid-template-columns:auto 1fr;column-gap:16px;
+    padding:20px 0;border-top:1px solid rgba(251,241,234,.28);align-items:start;
+  }
+  .safe__item:first-child{border-top:0;}
+  .safe__item .sn{font-family:var(--mono);font-size:12px;letter-spacing:.08em;opacity:.82;padding-top:3px;}
+  .safe__item b{display:block;font-family:var(--display);font-weight:600;font-size:17px;margin-bottom:4px;}
+  .safe__item span{font-size:13.5px;color:var(--on-accent-mute);line-height:1.62;}
+  .safe__foot{
+    border-top:1px solid rgba(251,241,234,.28);
+    padding:22px 0 44px;display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;justify-content:space-between;
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--on-accent-mute);
+  }
+  @media(min-width:880px){
+    .safe__grid{grid-template-columns:1.02fr .98fr;column-gap:60px;}
+    .safe__lede{border-bottom:0;padding-bottom:0;margin-bottom:0;border-right:1px solid rgba(251,241,234,.28);padding-right:56px;}
+    .safe__list{padding-top:4px;}
+    .safe__foot{grid-column:1/-1;}
+  }
+
+  /* ═══════════ steps ═══════════ */
+  .steps{display:grid;grid-template-columns:1fr;border-top:1px solid var(--hair);}
+  .step{
+    display:grid;grid-template-columns:auto 1fr;column-gap:20px;
+    padding:26px 2px;border-bottom:1px solid var(--hair);align-items:start;
+  }
+  .step__n{
+    font-family:var(--display);font-weight:900;font-size:clamp(36px,7vw,58px);
+    line-height:.82;color:var(--accent);letter-spacing:-.03em;
+    font-variant-numeric:tabular-nums;
+  }
+  .step__b h3{font-family:var(--display);font-weight:600;font-size:19px;margin-bottom:6px;letter-spacing:.005em;}
+  .step__b p{font-size:14.5px;color:var(--ink-2);line-height:1.7;max-width:42ch;}
+  @media(min-width:820px){
+    .steps{grid-template-columns:repeat(3,1fr);border-left:1px solid var(--hair);}
+    .step{border-bottom:0;border-right:1px solid var(--hair);padding:30px 26px;min-height:228px;}
+  }
+
+  /* ═══════════ maker / colophon ═══════════ */
+  .maker{display:grid;grid-template-columns:1fr;gap:24px;align-items:start;}
+  .maker__card{border:1px solid var(--hair-2);background:var(--paper);padding:28px 24px;}
+  .maker__card .eyebrow{margin-bottom:18px;display:block;}
+  .maker__card p{font-size:15px;color:var(--ink-2);line-height:1.76;margin-bottom:14px;max-width:56ch;}
+  .maker__card p:last-of-type{margin-bottom:24px;}
+  .maker__link{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:var(--display);font-weight:600;font-size:14px;
+    padding:12px 18px;border:1.5px solid var(--ink);
+    transition:background .16s,color .16s;
+  }
+  .maker__link:hover,.maker__link:focus-visible{background:var(--ink);color:var(--ground);}
+  .maker__meta{border-top:1px solid var(--hair);}
+  .maker__meta div{display:flex;gap:14px;padding:14px 2px;border-bottom:1px solid var(--hair);font-size:14px;align-items:baseline;}
+  .maker__meta div:last-child{border-bottom:0;}
+  .maker__meta dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--meta);min-width:8.5em;flex:none;}
+  .maker__meta dd{margin:0;color:var(--ink);font-weight:500;}
+  @media(min-width:820px){.maker{grid-template-columns:1.42fr 1fr;column-gap:44px;}}
+
+  /* ═══════════ request ═══════════ */
+  .req{border:1px solid var(--ink);background:var(--paper);display:grid;grid-template-columns:1fr;}
+  .req__l{padding:clamp(28px,4vw,38px) clamp(22px,3vw,30px);border-bottom:1px solid var(--hair);}
+  .req__l .eyebrow{display:block;margin-bottom:16px;}
+  .req__l h3{font-family:var(--display);font-weight:900;font-size:clamp(26px,5vw,40px);letter-spacing:-.02em;line-height:1.06;margin-bottom:14px;text-wrap:balance;}
+  .req__l p{color:var(--ink-2);font-size:15px;max-width:46ch;line-height:1.72;}
+  .req__r{padding:clamp(28px,4vw,38px) clamp(22px,3vw,30px);display:flex;flex-direction:column;gap:16px;justify-content:center;background:var(--ground-2);}
+  .req__r ul{display:grid;gap:11px;}
+  .req__r li{display:flex;gap:12px;font-size:14px;color:var(--ink-2);align-items:baseline;}
+  .req__r li .m{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.06em;flex:none;}
+  .req__note{font-family:var(--mono);font-size:11px;color:var(--meta);letter-spacing:.03em;line-height:1.6;}
+  @media(min-width:780px){
+    .req{grid-template-columns:1.28fr 1fr;}
+    .req__l{border-bottom:0;border-right:1px solid var(--hair);}
+  }
+
+  /* ═══════════ footer masthead ═══════════ */
+  .foot{background:var(--ink);color:#eee7db;padding:clamp(48px,7vw,64px) 0 30px;}
+  .foot a{color:#eee7db;}
+  .foot__top{display:grid;grid-template-columns:1fr;gap:32px;padding-bottom:32px;border-bottom:1px solid rgba(238,231,219,.16);}
+  .foot__mark{font-family:var(--display);font-weight:900;font-size:clamp(36px,8vw,66px);line-height:.9;letter-spacing:-.02em;}
+  .foot__mark .accent{color:var(--accent);}
+  .foot__lat{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(238,231,219,.52);margin-top:14px;}
+  .foot__tag{margin-top:18px;max-width:40ch;font-size:14px;color:rgba(238,231,219,.72);line-height:1.7;}
+  .foot__cols{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
+  .foot__col h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(238,231,219,.5);margin-bottom:14px;}
+  .foot__col li{border-bottom:1px solid rgba(238,231,219,.1);}
+  .foot__col li:last-child{border-bottom:0;}
+  .foot__col a{display:flex;align-items:baseline;gap:11px;padding:9px 0;font-size:14px;transition:padding-left .18s ease,color .16s ease;}
+  .foot__col a .idx{font-family:var(--mono);font-size:10px;color:rgba(238,231,219,.5);flex:none;}
+  .foot__col a:hover,.foot__col a:focus-visible{padding-left:7px;color:#fff;}
+  .foot__col a:hover .idx,.foot__col a:focus-visible .idx{color:var(--accent);}
+  .foot__col .muted{display:flex;align-items:baseline;gap:11px;padding:9px 0;font-size:14px;color:rgba(238,231,219,.5);}
+  .foot__col .muted .idx{font-family:var(--mono);font-size:10px;color:rgba(238,231,219,.4);}
+  .foot__note{
+    margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;align-items:baseline;
+  }
+  .foot__note p{max-width:64ch;font-size:11.5px;line-height:1.62;color:rgba(238,231,219,.5);}
+  .foot__note .cr{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(238,231,219,.62);white-space:nowrap;}
+  @media(min-width:760px){
+    .foot__top{grid-template-columns:1.3fr 1fr;column-gap:44px;}
+  }
+  @media(min-width:1000px){
+    .foot__top{grid-template-columns:1.4fr .6fr .6fr;}
+    .foot__cols{display:contents;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#tools">本文（ツール一覧）へスキップ</a>
+
+<!-- ═══════════ running head ═══════════ -->
+<header class="runhead">
+  <div class="wrap runhead__in">
+    <a class="runhead__mark" href="#top" aria-label="センセイツールズ トップへ">センセイ<b>ツールズ</b><span>Teacher's Tools</span></a>
+    <nav class="runhead__nav" aria-label="主要セクション">
+      <a href="#tools">ツール</a>
+      <a href="#safe">安心について</a>
+      <a href="#how">使い方</a>
+      <a href="#maker">作っている人</a>
+      <a href="#request">リクエスト</a>
+    </nav>
+    <span class="runhead__no" aria-hidden="true">JP · Free · 2026</span>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ═══════════ hero ═══════════ -->
+<section class="hero wrap" aria-labelledby="hero-title">
+  <div class="hero__meta">
+    <span><span class="k">ISSUE</span>No.04 — 2026</span>
+    <span><span class="k">FOR</span>日本の学校の先生へ</span>
+    <span><span class="k">PRICE</span>¥0 ／ すべて無料</span>
+    <span><span class="k">TOOLS</span>6 種掲載 ／ 1 公開中</span>
+  </div>
+
+  <div class="hero__lockup">
+    <div>
+      <h1 class="hero__title" id="hero-title">
+        <span class="line">TOOLS FOR</span>
+        <span class="line accent">TEACHERS.</span>
+      </h1>
+      <p class="hero__jp">先生の「めんどう」を、ひとつずつ道具に。</p>
+    </div>
+    <div class="hero__side">
+      <p class="hero__lead">
+        席替え、成績処理、テスト勉強、学級レク。授業と学級の現場でくり返す作業を、
+        <b>ブラウザで開けばすぐ動く道具</b>と<b>そのまま配れる配布物</b>にまとめました。
+        登録もインストールも不要。<b>ぜんぶ無料</b>で、必要なものだけ選んで使えます。
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--accent" href="#tools">用途からツールを探す <span class="arw" aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost btn--sm" href="#safe">安心して使える理由</a>
+      </div>
+    </div>
+  </div>
+
+  <nav class="hero__index" aria-label="公開中ツールの索引">
+    <a href="#cat-class"><span class="n num">01</span><span class="t">席替えアプリ</span><span class="c">クラス運営</span></a>
+    <a href="#cat-grade"><span class="n num">02</span><span class="t">成績処理Excel</span><span class="c">成績・評価</span></a>
+    <a href="#cat-study"><span class="n num">03</span><span class="t">くりトレ</span><span class="c">生徒に配る</span></a>
+    <a href="#cat-fun"><span class="n num">04</span><span class="t">ポケット☆ベースボール</span><span class="c">お楽しみ</span></a>
+  </nav>
+</section>
+
+<!-- ═══════════ promise strip ═══════════ -->
+<section class="wrap promise" aria-label="このサイトの約束">
+  <p class="promise__lab">The Promise ／ このサイトの約束</p>
+  <div class="promise__grid">
+    <div class="promise__i">
+      <span class="promise__n num">01</span>
+      <div class="promise__b"><b>生徒情報を外部送信しない</b><span>名簿などの入力は、原則あなたの端末の中だけで処理します。</span></div>
+    </div>
+    <div class="promise__i">
+      <span class="promise__n num">02</span>
+      <div class="promise__b"><b>当サイトに保存しない</b><span>入力内容をこちらのサーバーに集めて持つことはありません。</span></div>
+    </div>
+    <div class="promise__i">
+      <span class="promise__n num">03</span>
+      <div class="promise__b"><b>広告なし</b><span>バナーも追跡広告も出しません。ツールに集中できます。</span></div>
+    </div>
+    <div class="promise__i">
+      <span class="promise__n num">04</span>
+      <div class="promise__b"><b>すべて無料</b><span>会員登録も課金もなし。使いたいときに開くだけです。</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ tools ═══════════ -->
+<section class="section" id="tools" aria-labelledby="tools-head">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-head__no num">§ 01 — Catalogue</span>
+        <h2 class="sec-head__t" id="tools-head">用途別ツール一覧</h2>
+        <span class="sec-head__lat">Tools, sorted by what you need them for</span>
+      </div>
+      <p class="sec-head__desc">
+        「何をしたいか」で探せるよう、ツールを用途ごとのプレートにまとめました。
+        左のカテゴリで絞り込めます。
+      </p>
+    </div>
+
+    <div class="catalogue">
+
+      <!-- category rail / filter -->
+      <div class="railnav">
+        <p class="railnav__lab" id="filter-label">Filter ／ 用途で絞る</p>
+        <div class="tabs" role="tablist" aria-labelledby="filter-label">
+          <button class="tab" role="tab" id="tab-all"   aria-controls="cat-class cat-grade cat-study cat-fun cat-soon" aria-selected="true"  tabindex="0"  data-cat="all">すべて <span class="tnum num">06</span></button>
+          <button class="tab" role="tab" id="tab-class" aria-controls="cat-class" aria-selected="false" tabindex="-1" data-cat="class">クラス運営 <span class="tnum num">01</span></button>
+          <button class="tab" role="tab" id="tab-grade" aria-controls="cat-grade" aria-selected="false" tabindex="-1" data-cat="grade">成績・評価 <span class="tnum num">01</span></button>
+          <button class="tab" role="tab" id="tab-study" aria-controls="cat-study" aria-selected="false" tabindex="-1" data-cat="study">生徒に配る <span class="tnum num">01</span></button>
+          <button class="tab" role="tab" id="tab-fun"   aria-controls="cat-fun" aria-selected="false" tabindex="-1" data-cat="fun">お楽しみ <span class="tnum num">01</span></button>
+          <button class="tab" role="tab" id="tab-soon"  aria-controls="cat-soon" aria-selected="false" tabindex="-1" data-cat="soon">今後追加予定 <span class="tnum num">02</span></button>
+        </div>
+      </div>
+
+      <!-- plates -->
+      <div class="plates">
+
+        <!-- CAT 01 · クラス運営 -->
+        <article class="plate" id="cat-class" data-cat="class" role="tabpanel" aria-labelledby="tab-class cat-class-h" tabindex="0">
+          <div class="plate__head">
+            <div class="plate__spine"><span class="cat num">01</span> クラス運営</div>
+            <div class="plate__titles">
+              <h3 id="cat-class-h">教室をまわす道具</h3>
+              <span class="lat">Classroom Operations</span>
+              <span class="cnt num"><b>01</b> ／ 01 tool</span>
+            </div>
+          </div>
+          <div class="tool">
+            <div class="tool__main">
+              <div class="tool__lead">
+                <span class="tool__no num">01</span>
+                <h4 class="tool__name">席替えアプリ</h4>
+              </div>
+              <div class="tool__body">
+                <p>「この子とこの子は隣にしない」「あの子は前のほう」といった条件を入れて、ワンクリックで席替え。うまくいかなければ引き直すだけ。インストール不要で、ブラウザを開けばすぐ動きます。</p>
+                <div class="tool__kv">
+                  <span class="chip chip--cat">クラス運営</span>
+                  <span class="chip">形式&nbsp;<b>Webアプリ</b></span>
+                  <span class="chip">条件つき自動配置</span>
+                </div>
+              </div>
+              <p class="tool__note"><span class="lk">Privacy</span>名簿などの入力は端末内で処理し、外部に送信しません。</p>
+            </div>
+            <div class="tool__cta">
+              <span class="btn btn--wait btn--sm" aria-disabled="true">準備中</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CAT 02 · 成績・評価 -->
+        <article class="plate" id="cat-grade" data-cat="grade" role="tabpanel" aria-labelledby="tab-grade cat-grade-h" tabindex="0">
+          <div class="plate__head">
+            <div class="plate__spine"><span class="cat num">02</span> 成績・評価</div>
+            <div class="plate__titles">
+              <h3 id="cat-grade-h">評価をさばく道具</h3>
+              <span class="lat">Grading &amp; Assessment</span>
+              <span class="cnt num"><b>01</b> ／ 01 tool</span>
+            </div>
+          </div>
+          <div class="tool">
+            <div class="tool__main">
+              <div class="tool__lead">
+                <span class="tool__no num">02</span>
+                <h4 class="tool__name">成績処理Excel</h4>
+              </div>
+              <div class="tool__body">
+                <p>観点別評価の合計点から、A・B・C と評定を自動で計算するExcelシート。判定の基準は「設定シート」で自由に変更でき、学校ごとのルールに合わせられます。使い慣れたExcelの上でそのまま完結します。</p>
+                <div class="tool__kv">
+                  <span class="chip chip--cat">成績・評価</span>
+                  <span class="chip">形式&nbsp;<b>.xlsx</b></span>
+                  <span class="chip">判定基準カスタム可</span>
+                </div>
+              </div>
+              <p class="tool__note"><span class="lk">Privacy</span>ファイル内で計算が完結し、通信は発生しません。</p>
+            </div>
+            <div class="tool__cta">
+              <span class="btn btn--wait btn--sm" aria-disabled="true">準備中</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CAT 03 · 生徒に配る／テスト勉強 -->
+        <article class="plate" id="cat-study" data-cat="study" role="tabpanel" aria-labelledby="tab-study cat-study-h" tabindex="0">
+          <div class="plate__head">
+            <div class="plate__spine"><span class="cat num">03</span> 生徒に配る</div>
+            <div class="plate__titles">
+              <h3 id="cat-study-h">生徒に配る道具</h3>
+              <span class="lat">For Students · Exam Prep</span>
+              <span class="cnt num"><b>01</b> ／ 01 tool</span>
+            </div>
+          </div>
+          <div class="tool">
+            <div class="tool__main">
+              <div class="tool__lead">
+                <span class="tool__no num">03</span>
+                <h4 class="tool__name">くりトレ</h4>
+              </div>
+              <div class="tool__body">
+                <p>演習・暗記・OCR（画像から問題取り込み）に対応した学習用PWA。URLを渡すだけで生徒に配布でき、それぞれの端末でくり返し解いてもらえます。アプリのようにホーム画面へ置けます。</p>
+                <div class="tool__kv">
+                  <span class="chip chip--cat">生徒に配る／テスト勉強</span>
+                  <span class="chip">形式&nbsp;<b>PWA</b></span>
+                  <span class="chip">演習・暗記・OCR</span>
+                </div>
+              </div>
+              <p class="tool__note"><span class="lk">Privacy</span>学習データは各自の端末内（PWAキャッシュ）に保存されます。</p>
+            </div>
+            <div class="tool__cta">
+              <a class="btn btn--accent btn--sm" href="https://edu-tools-jp.github.io/kurikaeshi/" target="_blank" rel="noopener">使ってみる <span class="arw" aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <!-- CAT 04 · お楽しみ／スキマ時間 -->
+        <article class="plate" id="cat-fun" data-cat="fun" role="tabpanel" aria-labelledby="tab-fun cat-fun-h" tabindex="0">
+          <div class="plate__head">
+            <div class="plate__spine"><span class="cat num">04</span> お楽しみ</div>
+            <div class="plate__titles">
+              <h3 id="cat-fun-h">空いた時間の一手</h3>
+              <span class="lat">Fun · Downtime</span>
+              <span class="cnt num"><b>01</b> ／ 01 tool</span>
+            </div>
+          </div>
+          <div class="tool">
+            <div class="tool__main">
+              <div class="tool__lead">
+                <span class="tool__no num">04</span>
+                <h4 class="tool__name">ポケット☆ベースボール</h4>
+              </div>
+              <div class="tool__body">
+                <p>学級レクや、授業のスキマ時間にちょうどいい野球ゲーム。ひとりでCPUと対戦しても、友だちと端末をつないでオンライン対戦してもOK。すぐ始められます。</p>
+                <div class="tool__kv">
+                  <span class="chip chip--cat">お楽しみ／スキマ時間</span>
+                  <span class="chip">形式&nbsp;<b>ゲーム</b></span>
+                  <span class="chip">CPU戦・オンライン対戦</span>
+                </div>
+              </div>
+              <p class="tool__note"><span class="lk">Privacy</span>オンライン対戦は端末どうしのP2P（ピアツーピア）通信で行います。</p>
+            </div>
+            <div class="tool__cta">
+              <span class="btn btn--wait btn--sm" aria-disabled="true">準備中</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CAT 05 · 今後追加予定 -->
+        <article class="plate plate--soon" id="cat-soon" data-cat="soon" role="tabpanel" aria-labelledby="tab-soon cat-soon-h" tabindex="0">
+          <div class="plate__head">
+            <div class="plate__spine"><span class="cat num">05</span> 準備中</div>
+            <div class="plate__titles">
+              <h3 id="cat-soon-h">今後追加予定</h3>
+              <span class="lat">Coming Soon</span>
+              <span class="cnt num"><b>02</b> ／ 02 planned</span>
+            </div>
+          </div>
+          <div class="tool">
+            <div class="tool__main">
+              <div class="tool__lead">
+                <span class="tool__no num">05</span>
+                <h4 class="tool__name">班分け・くじ引き</h4>
+              </div>
+              <div class="tool__body">
+                <p>人数やグループ数、組み合わせの条件を指定して、公平に班をつくる／順番をきめる道具。名簿を貼るだけで使える形を検討中です。日直や係決めのくじ引きにも。</p>
+                <div class="tool__kv">
+                  <span class="chip chip--cat">クラス運営</span>
+                  <span class="chip">開発中</span>
+                </div>
+              </div>
+              <p class="tool__note"><span class="lk">Planned</span>公開時も、端末内処理・外部送信なしの方針で設計します。</p>
+            </div>
+            <div class="tool__cta">
+              <span class="btn btn--wait" aria-disabled="true">準備中</span>
+            </div>
+          </div>
+          <div class="tool">
+            <div class="tool__main">
+              <div class="tool__lead">
+                <span class="tool__no num">06</span>
+                <h4 class="tool__name">授業タイマー</h4>
+              </div>
+              <div class="tool__body">
+                <p>作業時間や小テストのカウントダウンを、教室のスクリーンに大きく表示するタイマー。残り時間が、離れた席からでも読める大きさで。仕上げ中です。</p>
+                <div class="tool__kv">
+                  <span class="chip chip--cat">クラス運営</span>
+                  <span class="chip">開発中</span>
+                </div>
+              </div>
+              <p class="tool__note"><span class="lk">Planned</span>ブラウザ内だけで動く、通信の要らない道具にする予定です。</p>
+            </div>
+            <div class="tool__cta">
+              <span class="btn btn--wait" aria-disabled="true">準備中</span>
+            </div>
+          </div>
+        </article>
+
+      </div><!-- /plates -->
+    </div><!-- /catalogue -->
+  </div>
+</section>
+
+<!-- ═══════════ 安心 masthead ═══════════ -->
+<section class="safe" id="safe" aria-labelledby="safe-h">
+  <div class="wrap">
+    <div class="safe__grid">
+      <div class="safe__lede">
+        <p class="eyebrow">§ 02 — Trust</p>
+        <h2 class="safe__h" id="safe-h">安心して<br>使えます。</h2>
+        <p class="safe__jp">先生と生徒の情報を、できるだけ手元に。</p>
+        <p class="safe__p">
+          学校で使う道具だからこそ、データの扱いはできるだけシンプルにし、余計なことをしない作りを心がけています。
+          基本の方針は次のとおりです。機能ごとの通信の有無は各ツールの注記にも書いています。気になる点はリクエスト窓口からいつでもどうぞ。
+        </p>
+      </div>
+
+      <div class="safe__list">
+        <div class="safe__item">
+          <span class="sn num">01</span>
+          <div><b>生徒の情報を外部に送らない</b><span>名簿や成績などの入力は、原則としてあなたの端末（ブラウザやExcel）の中だけで処理します。各ツールの具体的な扱いは、一覧の注記に明記しています。</span></div>
+        </div>
+        <div class="safe__item">
+          <span class="sn num">02</span>
+          <div><b>当サイトのサーバーに保存しない</b><span>入力された内容をこちら側に集めて保管する仕組みは持っていません。学習データが残る場合も、保存先はあなたの端末内です。</span></div>
+        </div>
+        <div class="safe__item">
+          <span class="sn num">03</span>
+          <div><b>広告や追跡を置かない</b><span>バナー広告も、行動を追いかけるための仕組みも掲載しません。授業や作業の邪魔になるものを置かない方針です。</span></div>
+        </div>
+        <div class="safe__item">
+          <span class="sn num">04</span>
+          <div><b>すべて無料で使える</b><span>会員登録も課金もありません。オンライン対戦など一部の機能で端末どうしがつながる点だけ、注記で個別にお知らせしています。</span></div>
+        </div>
+      </div>
+
+      <div class="safe__foot">
+        <span>No ads · No sign-up · No tracking</span>
+        <a class="btn btn--sm btn--onred" href="#request">気になる点を聞く <span class="arw" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ how to use ═══════════ -->
+<section class="section" id="how" aria-labelledby="how-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-head__no num">§ 03 — How it works</span>
+        <h2 class="sec-head__t" id="how-h">使い方は3ステップ</h2>
+        <span class="sec-head__lat">Pick · Open · Use</span>
+      </div>
+      <p class="sec-head__desc">
+        むずかしい準備は要りません。開いてすぐ使えるのが、このサイトの道具の共通点です。
+      </p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step__n num">1</div>
+        <div class="step__b">
+          <h3>用途からえらぶ</h3>
+          <p>「クラス運営」「成績・評価」など、いまやりたいことのカテゴリから道具をえらびます。上のタブで絞り込むこともできます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__n num">2</div>
+        <div class="step__b">
+          <h3>ひらく／ダウンロード</h3>
+          <p>Webアプリは「使ってみる」でその場で起動。Excelなどの配布物は「ダウンロード」でファイルを保存し、お使いのソフトで開きます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__n num">3</div>
+        <div class="step__b">
+          <h3>そのまま使う</h3>
+          <p>条件を入れてワンクリック、あるいは配布用URLを生徒にわたすだけ。登録もインストールも不要。合わなければ閉じるだけです。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ maker ═══════════ -->
+<section class="section" id="maker" aria-labelledby="maker-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="sec-head__no num">§ 04 — Colophon</span>
+        <h2 class="sec-head__t" id="maker-h">作っている人</h2>
+        <span class="sec-head__lat">Who makes these</span>
+      </div>
+      <p class="sec-head__desc">
+        現場で「あったら助かる」と感じた作業を、少しずつ道具にしています。
+      </p>
+    </div>
+    <div class="maker">
+      <div class="maker__card">
+        <span class="eyebrow eyebrow--ink">Statement ／ ひとこと</span>
+        <p>
+          生成AIを活用して、学校の先生向けの小さな道具をつくっている理科系のクリエイターです。
+          授業や学級で「これ、毎回めんどうだな」と感じる作業を見つけては、その場で開いて使える道具に置きかえています。
+          理科の内容を発信するかたわら、授業のまわりの手間を軽くするツールづくりを続けています。
+        </p>
+        <p style="color:var(--meta);font-size:13.5px;max-width:56ch;">
+          ※ ツールは個人が制作・公開しているものです。所属や資格を保証するものではなく、ご利用は各自の判断でお願いします。気になる点はお気軽にリクエスト窓口へ。
+        </p>
+        <a class="maker__link" href="#" rel="noopener">YouTubeを見る <span class="arw" aria-hidden="true">↗</span></a>
+      </div>
+      <dl class="maker__meta">
+        <div><dt>つくる人</dt><dd>理科系クリエイター</dd></div>
+        <div><dt>つくり方</dt><dd>生成AIを活用した個人制作</dd></div>
+        <div><dt>むけて</dt><dd>日本の学校の先生</dd></div>
+        <div><dt>方針</dt><dd>まず現場で役立つこと</dd></div>
+        <div><dt>発信</dt><dd>YouTube ／ 動画で紹介</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ request ═══════════ -->
+<section class="section" id="request" aria-labelledby="req-h">
+  <div class="wrap">
+    <div class="req">
+      <div class="req__l">
+        <span class="eyebrow">§ 05 — Request</span>
+        <h3 id="req-h">「こんな道具がほしい」を<br>聞かせてください。</h3>
+        <p>
+          「この作業を自動化したい」「この場面で使える道具がほしい」——
+          そんなアイデアや困りごとを募集しています。Googleフォームから送っていただければ、
+          いただいた声を参考に、次の道具をつくります。すべてに個別対応はできませんが、ひとつずつ目を通しています。
+        </p>
+        <div style="margin-top:24px;">
+          <a class="btn btn--accent" href="#" aria-label="リクエストフォームを開く（Googleフォーム）">リクエストを送る <span class="arw" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <div class="req__r">
+        <p class="eyebrow eyebrow--ink" style="margin-bottom:2px;">How to write ／ 書くときのヒント</p>
+        <ul>
+          <li><span class="m num">a</span> どの場面で・何に困っているか</li>
+          <li><span class="m num">b</span> こうなると助かる、という理想の動き</li>
+          <li><span class="m num">c</span> 教科・学年など、分かれば背景も</li>
+        </ul>
+        <p class="req__note">Googleフォームが開きます。<br>お名前や学校名の入力は任意です。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════ footer masthead ═══════════ -->
+<footer class="foot" aria-labelledby="foot-h">
+  <div class="wrap">
+    <div class="foot__top">
+      <div class="foot__lock">
+        <div class="foot__mark">センセイ<span class="accent">ツールズ</span></div>
+        <div class="foot__lat">Teacher's Tools — Free tools for teachers in Japan</div>
+        <p class="foot__tag" id="foot-h">
+          日本の学校の先生のための、無料ツール配布所。授業と学級の「めんどう」を、開いてすぐ使える道具に。すべて無料・登録不要。
+        </p>
+      </div>
+      <nav class="foot__col" aria-label="セクション索引">
+        <h4>Index ／ 索引</h4>
+        <ul>
+          <li><a href="#tools"><span class="idx num">01</span>用途別ツール一覧</a></li>
+          <li><a href="#safe"><span class="idx num">02</span>安心して使えます</a></li>
+          <li><a href="#how"><span class="idx num">03</span>使い方 3ステップ</a></li>
+          <li><a href="#maker"><span class="idx num">04</span>作っている人</a></li>
+          <li><a href="#request"><span class="idx num">05</span>リクエスト窓口</a></li>
+        </ul>
+      </nav>
+      <nav class="foot__col" aria-label="用途カテゴリ索引">
+        <h4>Categories ／ 用途</h4>
+        <ul>
+          <li><a href="#cat-class"><span class="idx num">01</span>クラス運営</a></li>
+          <li><a href="#cat-grade"><span class="idx num">02</span>成績・評価</a></li>
+          <li><a href="#cat-study"><span class="idx num">03</span>生徒に配る／テスト勉強</a></li>
+          <li><a href="#cat-fun"><span class="idx num">04</span>お楽しみ／スキマ時間</a></li>
+          <li><span class="muted"><span class="idx num">05</span>今後追加予定（準備中）</span></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="foot__note">
+      <p>※ データの取り扱いはツールごとに異なります。詳しくは各ツールの注記をご確認ください。掲載内容は予告なく更新・変更する場合があります。大切なデータは念のためバックアップのうえご利用ください。所属・資格を保証するものではありません。</p>
+      <span class="cr">© 2026 センセイツールズ ／ ¥0 · No.04</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var tablist = document.querySelector('.tabs[role="tablist"]');
+  if(!tablist) return;
+  var tabs = Array.prototype.slice.call(tablist.querySelectorAll('[role="tab"]'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.plate[data-cat]'));
+
+  function apply(cat){
+    panels.forEach(function(p){
+      var show = (cat === 'all') || (p.getAttribute('data-cat') === cat);
+      p.classList.toggle('is-hidden', !show);
+    });
+  }
+  function select(tab, setFocus){
+    tabs.forEach(function(t){
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    apply(tab.getAttribute('data-cat'));
+    if(setFocus) tab.focus();
+  }
+
+  tabs.forEach(function(tab, i){
+    tab.addEventListener('click', function(){ select(tab, false); });
+    tab.addEventListener('keydown', function(e){
+      var k = e.key, idx = null;
+      if(k === 'ArrowRight' || k === 'ArrowDown') idx = (i + 1) % tabs.length;
+      else if(k === 'ArrowLeft' || k === 'ArrowUp') idx = (i - 1 + tabs.length) % tabs.length;
+      else if(k === 'Home') idx = 0;
+      else if(k === 'End') idx = tabs.length - 1;
+      if(idx !== null){ e.preventDefault(); select(tabs[idx], true); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

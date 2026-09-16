@@ -1,0 +1,5 @@
+# ローカルの下書き・作業用（公開しない）
+options/
+*.py
+.DS_Store
+Thumbs.db
