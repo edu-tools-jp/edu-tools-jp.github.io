@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://edu-tools-jp.github.io/sitemap.xml
