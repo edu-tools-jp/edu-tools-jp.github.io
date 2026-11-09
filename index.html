@@ -342,6 +342,20 @@
   }
   .chip--cat{color:var(--accent-deep);border-color:var(--accent-tint);background:var(--accent-tint);}
   .chip b{color:var(--ink);}
+  .shot{
+    margin:18px 0 0;max-width:760px;
+    border:1px solid var(--hair-2);background:var(--ground-2);
+  }
+  .shot img{display:block;width:100%;height:auto;}
+  .shot figcaption{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+    color:var(--meta);background:var(--paper);
+    padding:8px 11px;border-top:1px solid var(--hair);
+  }
+  .shot--phone{max-width:238px;}
+  @media(prefers-reduced-motion:no-preference){
+    .shot img{transition:none;}
+  }
   .tool__note{
     margin-top:16px;padding-top:14px;border-top:1px dashed var(--hair-2);
     display:flex;gap:11px;align-items:flex-start;
@@ -635,6 +649,11 @@
                   <span class="chip">答えかくし</span>
                 </div>
               </div>
+                <figure class="shot">
+                  <img src="shots/pdfnote.webp" width="1400" height="788" loading="lazy" decoding="async"
+                       alt="PDFノートの画面。中学1年理科のプリントが映っていて、答えの5か所に赤い目かくしがかかり、そのうち2か所がタッチでめくられて「光の直進」「入射角＝反射角」が見えている。">
+                  <figcaption>PDFノート ／ 答えに目かくしをかけて、授業中にタッチでめくる</figcaption>
+                </figure>
               <p class="tool__note"><span class="lk">Privacy</span>書き込みは、あなたが選んだPC内のフォルダにファイルとして自動保存されます。外部には送信しません。</p>
             </div>
             <div class="tool__cta">
@@ -657,6 +676,11 @@
                   <span class="chip">Excel名簿取り込み</span>
                 </div>
               </div>
+                <figure class="shot">
+                  <img src="shots/roulette.webp" width="1400" height="887" loading="lazy" decoding="async"
+                       alt="指名ルーレットの画面。16人の名前が並んだ円盤が止まり、「今回の指名 高橋 桜子」とふりがなつきで大きく表示されている。残り15人。">
+                  <figcaption>指名ルーレット ／ 名簿から1人を抽選。当たった人は次から外れる</figcaption>
+                </figure>
               <p class="tool__note"><span class="lk">Privacy</span>名簿は使っているブラウザの中だけに保存され、サーバーには送信しません。</p>
             </div>
             <div class="tool__cta">
@@ -691,6 +715,11 @@
                   <span class="chip">ネットなしでも動く</span>
                 </div>
               </div>
+                <figure class="shot">
+                  <img src="shots/sekigae.webp" width="1400" height="887" loading="lazy" decoding="async"
+                       alt="席替えアプリの画面。30人ぶんの座席表ができあがり、男子が青・女子が赤で色分けされて教卓の前に並んでいる。左側には読み込んだ名簿が表示されている。">
+                  <figcaption>席替えアプリ ／ 条件つきで30人ぶんを自動配置</figcaption>
+                </figure>
               <p class="tool__note"><span class="lk">Privacy</span>名簿はブラウザの中だけに保存し、外部には送信しません。バックアップをファイルに書き出して、別のPCへ移せます。</p>
             </div>
             <div class="tool__cta">
@@ -724,6 +753,11 @@
                   <span class="chip">演習・暗記</span>
                 </div>
               </div>
+                <figure class="shot shot--phone">
+                  <img src="shots/kuritore.webp" width="560" height="989" loading="lazy" decoding="async"
+                       alt="くりトレをスマートフォンで開いた画面。「くりトレ の使い方」として、教科・単元を作る、問題を撮影する、復習する、全問正解をめざす、という演習モードの手順が並んでいる。">
+                  <figcaption>くりトレ ／ スマホで開く。演習モードと暗記モード</figcaption>
+                </figure>
               <p class="tool__note"><span class="lk">Privacy</span>撮影した問題や学習の記録は、生徒それぞれの端末の中だけに保存されます。</p>
             </div>
             <div class="tool__cta">
